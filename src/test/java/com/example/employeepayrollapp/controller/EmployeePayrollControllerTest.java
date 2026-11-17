@@ -1,34 +1,46 @@
 
 package com.example.employeepayrollapp.controller;
 
+import com.example.employeepayrollapp.dto.EmployeeDTO;
+import com.example.employeepayrollapp.service.EmployeePayrollService;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeePayrollControllerTest {
 
-    EmployeePayrollController controller =
-            new EmployeePayrollController();
+    private final EmployeePayrollService service =
+            new EmployeePayrollService();
+
+    private final EmployeePayrollController controller =
+            new EmployeePayrollController(service);
 
     @Test
     void givenWelcomeRequest_whenCalled_shouldReturnWelcomeMessage() {
-
-        String response = controller.getWelcomeMessage();
-
         assertEquals(
                 "Welcome to Employee Payroll App!",
-                response
+                controller.getWelcomeMessage()
         );
     }
 
     @Test
-    void givenEmployeeId_whenGetEmployeeById_shouldReturnMessage() {
-
-        String response = controller.getEmployeeById(1);
-
-        assertEquals(
-                "Fetching Employee with ID: 1",
-                response
+    void givenEmployeeDetails_whenCreated_shouldReturnEmployee() {
+        var employee = controller.createEmployee(
+                new EmployeeDTO("Lisa", 2000)
         );
+
+        assertEquals("Lisa", employee.getName());
+        assertEquals(2000, employee.getSalary());
+    }
+
+    @Test
+    void givenEmployeeId_whenFetched_shouldReturnEmployee() {
+        controller.createEmployee(new EmployeeDTO("John", 3000));
+
+        var employee = controller.getEmployeeById(1);
+
+        assertNotNull(employee);
+        assertEquals("John", employee.getName());
     }
 }
