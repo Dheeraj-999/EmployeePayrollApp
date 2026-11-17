@@ -1,9 +1,18 @@
 
 package com.example.employeepayrollapp.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class EmployeePayrollData {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
     private double salary;
 
@@ -12,6 +21,11 @@ public class EmployeePayrollData {
 
     public EmployeePayrollData(int id, String name, double salary) {
         this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public EmployeePayrollData(String name, double salary) {
         this.name = name;
         this.salary = salary;
     }
